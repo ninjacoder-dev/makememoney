@@ -1,10 +1,874 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1002030432074527"
-     crossorigin="anonymous"></script>
-  </head>
-  <body>
-    c
-  </body>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🍪 Cookie Clicker</title>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1002030432074527" crossorigin="anonymous"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg:       #0d0c0b;
+      --bg2:      #161412;
+      --panel:    #131210;
+      --panel2:   #1a1714;
+      --border:   #2e2820;
+      --accent:   #e8a020;
+      --accent2:  #c0622a;
+      --accent3:  #7a5c2e;
+      --green:    #4e7a3a;
+      --text:     #f0e8d8;
+      --text2:    #8a7a60;
+      --gold:     #e8c060;
+      --glow:     rgba(232,160,32,0.18);
+      --shadow:   0 8px 32px rgba(0,0,0,0.6);
+    }
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{
+      font-family:'DM Sans',sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      min-height:100vh;
+      display:grid;
+      grid-template-columns:260px 1fr 300px;
+      grid-template-rows:auto 1fr auto;
+    }
+
+    /* ── HEADER ── */
+    header{
+      grid-column:1/-1;
+      background:var(--panel);
+      border-bottom:1px solid var(--border);
+      padding:0 24px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      height:64px;
+    }
+    header h1{
+      font-family:'Playfair Display',serif;
+      font-size:1.6rem;
+      color:var(--accent);
+      letter-spacing:0.02em;
+    }
+    .save-ind{font-size:0.72rem;color:var(--text2);display:flex;align-items:center;gap:6px;}
+    .save-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite;}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+
+    /* ── AD HEADER (728×90) ── */
+    .ad-header-wrap{
+      flex:1;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      padding:0 20px;
+      max-width:760px;
+      margin:0 auto;
+    }
+    .ad-header-wrap ins{display:block;width:728px;max-width:100%;height:90px;}
+
+    /* ── LEFT PANEL ── */
+    .left-panel{
+      background:var(--panel);
+      border-right:1px solid var(--border);
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      padding:24px 16px;
+      gap:18px;
+      position:sticky;
+      top:0;
+      height:calc(100vh - 64px);
+      overflow:hidden;
+    }
+    .cookie-count{
+      font-family:'Playfair Display',serif;
+      font-size:1.5rem;
+      color:var(--accent);
+      text-align:center;
+      line-height:1.2;
+    }
+    .cookie-count span{
+      font-size:0.78rem;
+      color:var(--text2);
+      display:block;
+      font-family:'DM Sans',sans-serif;
+      font-weight:400;
+      margin-top:2px;
+    }
+    .cookie-wrap{
+      position:relative;
+      width:150px;height:150px;
+      cursor:pointer;user-select:none;
+      display:flex;align-items:center;justify-content:center;
+    }
+    .cookie-main{
+      font-size:7rem;line-height:1;
+      display:block;
+      transition:transform 0.07s,filter 0.2s;
+      filter:drop-shadow(0 0 12px rgba(232,160,32,0.3));
+    }
+    .cookie-main:active{transform:scale(0.88);}
+    .cookie-main:hover{filter:drop-shadow(0 0 24px rgba(232,160,32,0.7));}
+    .click-anim{
+      position:absolute;
+      pointer-events:none;
+      font-family:'Playfair Display',serif;
+      font-size:1.2rem;
+      color:var(--accent);
+      animation:floatUp 0.9s ease-out forwards;
+      white-space:nowrap;
+      text-shadow:0 2px 8px rgba(0,0,0,0.8);
+    }
+    @keyframes floatUp{
+      0%{opacity:1;transform:translateY(0) scale(1);}
+      100%{opacity:0;transform:translateY(-60px) scale(0.8);}
+    }
+    .stats-mini{
+      background:var(--panel2);
+      border:1px solid var(--border);
+      border-radius:8px;
+      padding:10px 14px;
+      width:100%;
+      font-size:0.8rem;
+      display:flex;flex-direction:column;gap:5px;
+    }
+    .stats-mini .row{display:flex;justify-content:space-between;align-items:center;}
+    .stats-mini .val{color:var(--accent);font-weight:600;}
+    .stats-mini .lbl{color:var(--text2);}
+
+    .bar-wrap{width:100%;}
+    .bar-wrap h3{font-size:0.72rem;color:var(--text2);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px;}
+    .bar-track{height:6px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden;}
+    .bar-fill{height:100%;background:linear-gradient(90deg,var(--accent2),var(--accent));border-radius:3px;transition:width 0.5s ease;}
+    .bar-label{font-size:0.68rem;color:var(--text2);margin-top:4px;text-align:right;}
+
+    .badges-wrap{width:100%;}
+    .badges-wrap h3{font-size:0.72rem;color:var(--text2);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px;text-align:center;}
+    .milestone-badges{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;}
+    .badge{
+      background:var(--panel2);border:1px solid var(--border);border-radius:6px;
+      padding:3px 6px;font-size:0.7rem;color:var(--text2);opacity:0.35;transition:all 0.3s;
+    }
+    .badge.unlocked{opacity:1;color:var(--gold);border-color:var(--gold);background:rgba(232,192,96,0.1);}
+
+    /* ── CENTER ── */
+    .center-panel{display:flex;flex-direction:column;overflow-y:auto;max-height:calc(100vh - 64px);}
+    .tab-bar{
+      display:flex;background:var(--panel2);border-bottom:1px solid var(--border);
+      position:sticky;top:0;z-index:10;
+    }
+    .tab-btn{
+      flex:1;padding:14px 8px;background:none;border:none;
+      color:var(--text2);font-family:'DM Sans',sans-serif;font-size:0.82rem;font-weight:600;
+      cursor:pointer;transition:all 0.2s;border-bottom:2px solid transparent;
+      text-transform:uppercase;letter-spacing:0.8px;
+    }
+    .tab-btn.active{color:var(--accent);border-bottom-color:var(--accent);background:rgba(232,160,32,0.05);}
+    .tab-btn:hover:not(.active){color:var(--text);background:rgba(255,255,255,0.03);}
+    .tab-content{display:none;padding:20px;}
+    .tab-content.active{display:block;}
+
+    .section-title{
+      font-family:'Playfair Display',serif;
+      font-size:1rem;color:var(--accent);
+      margin-bottom:12px;padding-bottom:8px;
+      border-bottom:1px solid var(--border);
+    }
+
+    /* ── AD IN CENTER (responsive) ── */
+    .ad-center{
+      margin:20px 0;
+      border-top:1px solid var(--border);
+      border-bottom:1px solid var(--border);
+      padding:16px 0;
+      background:var(--panel2);
+    }
+    .ad-center ins{display:block;width:100%;}
+
+    /* ── AD MULTIPLEX ── */
+    .ad-multiplex{
+      margin:20px 0;
+      border-top:1px solid var(--border);
+      padding-top:16px;
+    }
+    .ad-multiplex ins{display:block;width:100%;}
+
+    /* ── BUILDINGS ── */
+    .building-grid{display:flex;flex-direction:column;gap:5px;margin-bottom:16px;}
+    .building-card{
+      background:var(--panel2);border:1px solid var(--border);border-radius:8px;
+      padding:10px 14px;display:grid;grid-template-columns:34px 1fr auto;
+      align-items:center;gap:10px;cursor:pointer;transition:all 0.15s;position:relative;overflow:hidden;
+    }
+    .building-card::after{
+      content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
+      background:var(--border);transition:background 0.2s;
+    }
+    .building-card:hover{border-color:var(--accent3);background:#1e1b16;}
+    .building-card.can-afford::after{background:var(--green);}
+    .building-card.can-afford{border-color:rgba(78,122,58,0.4);}
+    .building-card.disabled{opacity:0.4;cursor:not-allowed;}
+    .building-card.disabled:hover{border-color:var(--border);background:var(--panel2);}
+    .building-icon{font-size:1.5rem;text-align:center;}
+    .building-name{font-weight:600;font-size:0.88rem;}
+    .building-desc{font-size:0.7rem;color:var(--text2);margin-top:1px;}
+    .building-count-col{text-align:right;}
+    .building-count{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--accent);line-height:1;}
+    .building-cost{font-size:0.7rem;color:var(--text2);}
+
+    /* ── UPGRADES ── */
+    .upgrades-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;}
+    .upgrade-card{
+      background:var(--panel2);border:1px solid var(--border);border-radius:8px;
+      padding:12px;cursor:pointer;transition:all 0.18s;display:flex;flex-direction:column;gap:5px;
+      position:relative;overflow:hidden;
+    }
+    .upgrade-card:hover:not(.purchased):not(.locked){
+      border-color:var(--accent);background:#1e1b16;
+      transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,0.5);
+    }
+    .upgrade-card.can-afford:not(.purchased){
+      border-color:rgba(78,122,58,0.5);
+    }
+    .upgrade-card.can-afford:not(.purchased)::before{
+      content:'';position:absolute;top:0;left:0;right:0;height:2px;
+      background:linear-gradient(90deg,var(--green),transparent);
+    }
+    .upgrade-card.purchased{
+      opacity:0.55;cursor:default;
+      border-color:rgba(78,122,58,0.3);
+    }
+    .upgrade-card.locked{opacity:0.25;cursor:not-allowed;}
+    .upgrade-icon{font-size:1.5rem;}
+    .upgrade-name{font-weight:600;font-size:0.8rem;line-height:1.2;}
+    .upgrade-desc{font-size:0.68rem;color:var(--text2);flex:1;}
+    .upgrade-cost{font-size:0.72rem;color:var(--accent);font-weight:600;}
+    .upgrade-badge{
+      font-size:0.6rem;padding:2px 6px;border-radius:4px;width:fit-content;
+      text-transform:uppercase;letter-spacing:0.5px;font-weight:600;
+    }
+    .upgrade-badge.click{background:rgba(192,98,42,0.2);color:#d4824a;}
+    .upgrade-badge.cps{background:rgba(122,92,46,0.3);color:#c0a060;}
+    .upgrade-badge.special{background:rgba(232,160,32,0.15);color:var(--accent);}
+
+    /* ── STATS ── */
+    .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
+    .stat-card{
+      background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:14px;
+    }
+    .stat-card .val{font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--accent);}
+    .stat-card .lbl{font-size:0.72rem;color:var(--text2);margin-top:2px;}
+    .buildings-detail{display:flex;flex-direction:column;gap:5px;}
+    .building-row{
+      background:var(--panel2);border:1px solid var(--border);border-radius:8px;
+      padding:8px 12px;display:flex;justify-content:space-between;align-items:center;font-size:0.8rem;
+    }
+    .building-row .icon-name{display:flex;gap:8px;align-items:center;}
+    .building-row .cps-contrib{color:var(--accent);font-weight:600;}
+
+    /* ── RIGHT PANEL ── */
+    .right-panel{
+      background:var(--panel);border-left:1px solid var(--border);
+      display:flex;flex-direction:column;align-items:center;
+      padding:20px 14px;gap:16px;
+      position:sticky;top:0;height:calc(100vh - 64px);overflow-y:auto;
+    }
+    .right-panel h2{
+      font-family:'Playfair Display',serif;font-size:1rem;color:var(--accent);
+      width:100%;text-align:center;
+    }
+
+    /* ── AD RIGHT (160×600) ── */
+    .ad-right{width:100%;}
+    .ad-right ins{display:block;width:160px;margin:0 auto;}
+
+    /* ── MILESTONES ── */
+    .milestones-list{width:100%;display:flex;flex-direction:column;gap:5px;}
+    .milestone-item{
+      background:var(--panel2);border:1px solid var(--border);border-radius:8px;
+      padding:7px 10px;display:flex;align-items:center;gap:8px;font-size:0.76rem;
+      opacity:0.3;transition:all 0.4s;
+    }
+    .milestone-item.unlocked{opacity:1;border-color:rgba(232,192,96,0.4);background:rgba(232,192,96,0.05);}
+    .milestone-item .m-icon{font-size:1rem;}
+    .milestone-item .m-name{font-weight:600;}
+    .milestone-item .m-req{font-size:0.65rem;color:var(--text2);}
+
+    /* ── GOLDEN COOKIE ── */
+    .golden-cookie{
+      position:fixed;font-size:2.2rem;cursor:pointer;z-index:200;
+      animation:goldSpin 3s linear infinite;
+      filter:drop-shadow(0 0 14px rgba(255,220,50,0.9));
+      display:none;user-select:none;
+    }
+    @keyframes goldSpin{
+      0%{transform:rotate(0deg) scale(1);}
+      50%{transform:rotate(180deg) scale(1.12);}
+      100%{transform:rotate(360deg) scale(1);}
+    }
+
+    /* ── NOTIFICATION ── */
+    .notif{
+      position:fixed;bottom:20px;left:50%;
+      transform:translateX(-50%) translateY(80px);
+      background:var(--panel2);border:1px solid var(--accent);
+      color:var(--accent);
+      padding:10px 22px;border-radius:8px;font-weight:600;font-size:0.85rem;
+      box-shadow:var(--shadow);transition:transform 0.3s;z-index:999;
+    }
+    .notif.show{transform:translateX(-50%) translateY(0);}
+
+    footer{
+      grid-column:1/-1;background:var(--panel2);border-top:1px solid var(--border);
+      text-align:center;padding:8px;font-size:0.68rem;color:var(--text2);
+    }
+
+    ::-webkit-scrollbar{width:5px;}
+    ::-webkit-scrollbar-track{background:var(--bg);}
+    ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+  </style>
+</head>
+<body>
+
+<!-- GOLDEN COOKIE -->
+<div class="golden-cookie" id="goldenCookie" onclick="collectGolden()" title="Cookie Dorée!">🌟</div>
+<div class="notif" id="notif"></div>
+
+<!-- ─────────── HEADER ─────────── -->
+<header>
+  <h1>🍪 Cookie Clicker</h1>
+
+  <!-- AD 728×90 HEADER -->
+  <div class="ad-header-wrap">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1002030432074527" crossorigin="anonymous"></script>
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:728px;max-width:100%;height:90px"
+         data-ad-client="ca-pub-1002030432074527"
+         data-ad-slot="8756709643"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <div class="save-ind"><div class="save-dot"></div> Sauvegardé</div>
+</header>
+
+<!-- ─────────── LEFT: Cookie ─────────── -->
+<div class="left-panel">
+  <div class="cookie-count" id="cookieDisplay">0 <span id="cpsDisplay">0/sec · 1/clic</span></div>
+  <div class="cookie-wrap" id="cookieWrap">
+    <span class="cookie-main" id="cookieBtn" onclick="clickCookie(event)">🍪</span>
+  </div>
+  <div class="stats-mini">
+    <div class="row"><span class="lbl">Total bakées</span><span class="val" id="totalDisplay">0</span></div>
+    <div class="row"><span class="lbl">Par clic</span><span class="val" id="perClickDisplay">1</span></div>
+    <div class="row"><span class="lbl">Par seconde</span><span class="val" id="cpsSmall">0</span></div>
+    <div class="row"><span class="lbl">Clic ×</span><span class="val" id="clickMult">1x</span></div>
+    <div class="row"><span class="lbl">CPS ×</span><span class="val" id="cpsMult">1x</span></div>
+  </div>
+  <div class="bar-wrap">
+    <h3>Prochain Jalon</h3>
+    <div class="bar-track"><div class="bar-fill" id="milestoneBar" style="width:0%"></div></div>
+    <div class="bar-label" id="milestoneBarLabel">0 / 100</div>
+  </div>
+  <div class="badges-wrap">
+    <h3>Médailles</h3>
+    <div class="milestone-badges" id="badgesContainer"></div>
+  </div>
+</div>
+
+<!-- ─────────── CENTER ─────────── -->
+<div class="center-panel">
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab('shop')">🏪 Boutique</button>
+    <button class="tab-btn" onclick="switchTab('upgrades')">⚡ Améliorations</button>
+    <button class="tab-btn" onclick="switchTab('stats')">📊 Statistiques</button>
+  </div>
+
+  <!-- SHOP TAB -->
+  <div class="tab-content active" id="tab-shop">
+    <p class="section-title">🏗️ Bâtiments</p>
+    <div class="building-grid" id="buildingGrid"></div>
+
+    <!-- AD DISPLAY (responsive) au milieu du shop -->
+    <div class="ad-center">
+      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1002030432074527" crossorigin="anonymous"></script>
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-1002030432074527"
+           data-ad-slot="8756709643"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+  </div>
+
+  <!-- UPGRADES TAB -->
+  <div class="tab-content" id="tab-upgrades">
+    <p class="section-title">⚡ Améliorations disponibles</p>
+    <div class="upgrades-grid" id="upgradesGrid"></div>
+
+    <!-- AD MULTIPLEX sous les améliorations -->
+    <div class="ad-multiplex">
+      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1002030432074527" crossorigin="anonymous"></script>
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-format="autorelaxed"
+           data-ad-client="ca-pub-1002030432074527"
+           data-ad-slot="2810150333"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+  </div>
+
+  <!-- STATS TAB -->
+  <div class="tab-content" id="tab-stats">
+    <p class="section-title">📊 Statistiques globales</p>
+    <div class="stats-grid">
+      <div class="stat-card"><div class="val" id="statTotal">0</div><div class="lbl">🍪 Total bakées</div></div>
+      <div class="stat-card"><div class="val" id="statCPS">0</div><div class="lbl">⚡ Cookies/sec</div></div>
+      <div class="stat-card"><div class="val" id="statClicks">0</div><div class="lbl">👆 Total clics</div></div>
+      <div class="stat-card"><div class="val" id="statPerClick">1</div><div class="lbl">🖱️ Par clic</div></div>
+    </div>
+    <p class="section-title" style="margin-top:10px;">🏭 Contribution des bâtiments</p>
+    <div class="buildings-detail" id="buildingsDetail"></div>
+
+    <!-- AD DISPLAY sous les stats -->
+    <div class="ad-center" style="margin-top:20px;">
+      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1002030432074527" crossorigin="anonymous"></script>
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-1002030432074527"
+           data-ad-slot="8756709643"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+  </div>
+</div>
+
+<!-- ─────────── RIGHT: Jalons + Pub ─────────── -->
+<div class="right-panel">
+  <h2>🏆 Jalons</h2>
+  <div class="milestones-list" id="milestonesList"></div>
+
+  <!-- AD 160×600 dans la sidebar droite -->
+  <div class="ad-right">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1002030432074527" crossorigin="anonymous"></script>
+    <ins class="adsbygoogle"
+         style="display:block;width:160px;height:600px"
+         data-ad-client="ca-pub-1002030432074527"
+         data-ad-slot="8756709643"
+         data-ad-format="auto"
+         data-full-width-responsive="false"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+</div>
+
+<footer>🍪 Cookie Clicker · Sauvegarde auto toutes les 10s</footer>
+
+<script>
+// ============================================================
+//  GAME STATE
+// ============================================================
+let state = {
+  cookies:0, totalCookies:0, totalClicks:0,
+  buildings:{}, upgrades:{}, clickMult:1, cpsMult:1,
+};
+
+// ============================================================
+//  BUILDINGS
+// ============================================================
+const BUILDINGS = [
+  {id:'cursor',  icon:'☝️', name:'Curseur',          baseCost:15,        baseCps:0.1,   desc:'Auto-clique gentiment.'},
+  {id:'grandma', icon:'👵', name:'Grand-mère',        baseCost:100,       baseCps:0.5,   desc:'Fait des cookies avec amour.'},
+  {id:'farm',    icon:'🌾', name:'Ferme',             baseCost:1100,      baseCps:4,     desc:'Cultive les champs de farine.'},
+  {id:'mine',    icon:'⛏️', name:'Mine',              baseCost:12000,     baseCps:10,    desc:'Extrait du chocolat du sol.'},
+  {id:'factory', icon:'🏭', name:'Usine',             baseCost:130000,    baseCps:40,    desc:'Production industrielle.'},
+  {id:'bank',    icon:'🏦', name:'Banque',            baseCost:1400000,   baseCps:100,   desc:'Investit en pépites de choco.'},
+  {id:'temple',  icon:'🛕', name:'Temple',            baseCost:20000000,  baseCps:400,   desc:'Prie les dieux du cookie.'},
+  {id:'wiz',     icon:'🧙', name:'Tour de Mage',      baseCost:330000000, baseCps:1666,  desc:'Incante des cookies ex nihilo.'},
+  {id:'ship',    icon:'🚀', name:'Vaisseau Spatial',  baseCost:5.1e9,     baseCps:6666,  desc:'Importe des cookies de galaxies.'},
+  {id:'portal',  icon:'🌀', name:'Portail Cookière',  baseCost:7.5e10,    baseCps:26666, desc:'Ouvre une faille en Cookiverse.'},
+  {id:'time',    icon:'⏳', name:'Machine Temporelle',baseCost:1e15,      baseCps:98765, desc:'Ramène des cookies du futur.'},
+];
+
+// ============================================================
+//  UPGRADES
+// ============================================================
+const UPGRADES = [
+  {id:'u1', icon:'🖱️', name:'Double clic',      cost:100,        type:'click',   mult:2,   desc:'×2 cookies par clic.',          req:null},
+  {id:'u2', icon:'🖱️', name:'Triple clic',      cost:500,        type:'click',   mult:1.5, desc:'×1.5 cookies par clic.',        req:null},
+  {id:'u3', icon:'💪', name:'Clic Musclé',       cost:3000,       type:'click',   mult:2,   desc:'×2 cookies par clic.',          req:null},
+  {id:'u4', icon:'⚡', name:'Clic Éclair',       cost:20000,      type:'click',   mult:2,   desc:'×2 cookies par clic.',          req:null},
+  {id:'u5', icon:'💎', name:'Clic Diamant',      cost:200000,     type:'click',   mult:3,   desc:'×3 cookies par clic.',          req:null},
+  {id:'u6', icon:'🌟', name:'Clic Stellaire',    cost:5000000,    type:'click',   mult:4,   desc:'×4 cookies par clic.',          req:null},
+  {id:'u7', icon:'☝️', name:'Curseur Pro',       cost:200,        type:'cps',     mult:2,   desc:'×2 CPS global.',                req:{building:'cursor',  count:1}},
+  {id:'u8', icon:'👵', name:'Granny Boost',      cost:1000,       type:'cps',     mult:2,   desc:'×2 CPS global.',                req:{building:'grandma', count:1}},
+  {id:'u9', icon:'🌾', name:'Engrais Magique',   cost:15000,      type:'cps',     mult:2,   desc:'×2 CPS global.',                req:{building:'farm',    count:1}},
+  {id:'u10',icon:'💎', name:'Veines de Choco',   cost:150000,     type:'cps',     mult:2,   desc:'×2 CPS global.',                req:{building:'mine',    count:1}},
+  {id:'u11',icon:'🏭', name:'Chaîne Turbo',      cost:1600000,    type:'cps',     mult:2,   desc:'×2 CPS global.',                req:{building:'factory', count:1}},
+  {id:'u12',icon:'🏦', name:'Intérêts Composés', cost:22000000,   type:'cps',     mult:2,   desc:'×2 CPS global.',                req:{building:'bank',    count:1}},
+  {id:'u13',icon:'🛕', name:'Bénédiction Cookie',cost:340000000,  type:'cps',     mult:2,   desc:'×2 CPS global.',                req:{building:'temple',  count:1}},
+  {id:'u14',icon:'🧙', name:'Formule Arcane',    cost:5e9,        type:'cps',     mult:2,   desc:'×2 CPS global.',                req:{building:'wiz',     count:1}},
+  {id:'u15',icon:'🚀', name:'Propulsion Choco',  cost:7.5e10,     type:'cps',     mult:2,   desc:'×2 CPS global.',                req:{building:'ship',    count:1}},
+  {id:'u16',icon:'🌀', name:'Flux Dimensionnel', cost:1.1e12,     type:'cps',     mult:2,   desc:'×2 CPS global.',                req:{building:'portal',  count:1}},
+  {id:'u17',icon:'☝️', name:'10 Curseurs',       cost:600,        type:'cps',     mult:1.5, desc:'×1.5 CPS. Besoin 10 curseurs.', req:{building:'cursor',  count:10}},
+  {id:'u18',icon:'👵', name:'25 Grand-mères',    cost:8000,       type:'cps',     mult:1.5, desc:'×1.5 CPS. Besoin 25 mamies.',   req:{building:'grandma', count:25}},
+  {id:'u19',icon:'🌾', name:'50 Fermes',         cost:80000,      type:'cps',     mult:1.5, desc:'×1.5 CPS. Besoin 50 fermes.',   req:{building:'farm',    count:50}},
+  {id:'u20',icon:'⛏️', name:'100 Mines',         cost:800000,     type:'cps',     mult:1.5, desc:'×1.5 CPS. Besoin 100 mines.',   req:{building:'mine',    count:100}},
+  {id:'u21',icon:'🍫', name:'Pluie de Chocolat', cost:50000,      type:'special', mult:1.5, desc:'×1.5 clics ET CPS.',            req:null},
+  {id:'u22',icon:'🎂', name:'Gâteau de Fête',    cost:500000,     type:'special', mult:2,   desc:'×2 clics ET CPS.',              req:null},
+  {id:'u23',icon:'🍩', name:'Donuts Dorés',      cost:5000000,    type:'special', mult:2.5, desc:'×2.5 clics ET CPS.',            req:null},
+  {id:'u24',icon:'🧁', name:'Cupcake Quantique', cost:50000000,   type:'special', mult:3,   desc:'×3 clics ET CPS.',              req:null},
+  {id:'u25',icon:'🎃', name:'Cookie Halloween',  cost:250000,     type:'special', mult:1.75,desc:'×1.75 clics ET CPS.',           req:null},
+  {id:'u26',icon:'🎄', name:'Cookie Noël',       cost:2500000,    type:'special', mult:2,   desc:'×2 clics ET CPS. Ho Ho Ho!',    req:null},
+  {id:'u27',icon:'🌈', name:'Arc-en-Ciel Cookie',cost:25000000,   type:'special', mult:2.5, desc:'×2.5 clics ET CPS.',            req:null},
+  {id:'u28',icon:'🔮', name:'Orbe de Cookie',    cost:250000000,  type:'special', mult:3,   desc:'×3 clics ET CPS.',              req:null},
+  {id:'u29',icon:'💫', name:'Supernova Sucrée',  cost:2500000000, type:'special', mult:4,   desc:'×4 clics ET CPS.',              req:null},
+  {id:'u30',icon:'🌌', name:'Big Cookie Bang',   cost:25000000000,type:'special', mult:5,   desc:'×5 clics ET CPS. Ultime!',      req:null},
+];
+
+// ============================================================
+//  MILESTONES
+// ============================================================
+const MILESTONES = [
+  {id:'m1', icon:'🍪', name:'Premier Cookie',  req:1,    desc:'1 cookie'},
+  {id:'m2', icon:'🎉', name:'100 Cookies',      req:100,  desc:'100 cookies'},
+  {id:'m3', icon:'🏅', name:'1k Cookies',       req:1000, desc:'1 000 cookies'},
+  {id:'m4', icon:'⭐', name:'10k Cookies',      req:10000,desc:'10 000 cookies'},
+  {id:'m5', icon:'🌟', name:'100k Cookies',     req:1e5,  desc:'100 000 cookies'},
+  {id:'m6', icon:'💫', name:'1 Million',         req:1e6,  desc:'1 000 000 cookies'},
+  {id:'m7', icon:'🏆', name:'1 Milliard',        req:1e9,  desc:'1 milliard'},
+  {id:'m8', icon:'👑', name:'1 Trillion',        req:1e12, desc:'1 trillion'},
+  {id:'m9', icon:'🌌', name:'1 Quadrillion',     req:1e15, desc:'1 quadrillion'},
+  {id:'m10',icon:'🔥', name:'Cookie Cosmique',   req:1e18, desc:'1 quintillion'},
+  {id:'m11',icon:'🖱️', name:'100 Clics',         clicks:100,  desc:'100 clics'},
+  {id:'m12',icon:'💪', name:'1000 Clics',         clicks:1000, desc:'1000 clics'},
+  {id:'m13',icon:'⚡', name:'Vitesse 10/s',       cps:10,  desc:'10 cookies/sec'},
+  {id:'m14',icon:'🚀', name:'Vitesse 100/s',      cps:100, desc:'100 cookies/sec'},
+  {id:'m15',icon:'🌀', name:'Vitesse 1000/s',     cps:1000,desc:'1000 cookies/sec'},
+];
+
+// ============================================================
+//  COMPUTED
+// ============================================================
+function getBaseCps(){
+  let cps=0;
+  BUILDINGS.forEach(b=>{ cps+=(state.buildings[b.id]||0)*b.baseCps; });
+  return cps;
+}
+function getTotalCps(){ return getBaseCps()*state.cpsMult; }
+function getCostFor(b,n){ return Math.ceil(b.baseCost*Math.pow(1.15,(state.buildings[b.id]||0)+n-1)); }
+function formatNum(n){
+  if(n<1000)   return Math.floor(n).toString();
+  if(n<1e6)    return (n/1e3).toFixed(1)+'k';
+  if(n<1e9)    return (n/1e6).toFixed(2)+' M';
+  if(n<1e12)   return (n/1e9).toFixed(2)+' Md';
+  if(n<1e15)   return (n/1e12).toFixed(2)+' Bn';
+  if(n<1e18)   return (n/1e15).toFixed(2)+' Qd';
+  return (n/1e18).toFixed(2)+' Qt';
+}
+
+// ============================================================
+//  CLICK
+// ============================================================
+function clickCookie(e){
+  const amount=state.clickMult;
+  state.cookies+=amount; state.totalCookies+=amount; state.totalClicks++;
+  const wrap=document.getElementById('cookieWrap');
+  const anim=document.createElement('span');
+  anim.className='click-anim';
+  anim.textContent='+'+formatNum(amount);
+  const bx=wrap.getBoundingClientRect();
+  anim.style.left=(e.clientX-bx.left)+'px';
+  anim.style.top=(e.clientY-bx.top)+'px';
+  wrap.appendChild(anim);
+  setTimeout(()=>anim.remove(),900);
+  updateUI(); checkMilestones();
+}
+
+// ============================================================
+//  BUY BUILDING
+// ============================================================
+function buyBuilding(id){
+  const b=BUILDINGS.find(x=>x.id===id);
+  const cost=getCostFor(b,1);
+  if(state.cookies<cost) return;
+  state.cookies-=cost;
+  state.buildings[id]=(state.buildings[id]||0)+1;
+  updateUI(); checkMilestones(); renderBuildings();
+}
+
+// ============================================================
+//  BUY UPGRADE
+// ============================================================
+function buyUpgrade(id){
+  const u=UPGRADES.find(x=>x.id===id);
+  if(!u||state.upgrades[id]) return;
+  if(!isUpgradeUnlocked(u)){ showNotif('🔒 Pas encore débloquée!'); return; }
+  if(state.cookies<u.cost){ showNotif('Pas assez de cookies! 🍪'); return; }
+  state.cookies-=u.cost;
+  state.upgrades[id]=true;
+  if(u.type==='click') state.clickMult*=u.mult;
+  if(u.type==='cps')   state.cpsMult*=u.mult;
+  if(u.type==='special'){ state.clickMult*=u.mult; state.cpsMult*=u.mult; }
+  showNotif('✅ '+u.name+' achetée!');
+  updateUI(); renderUpgrades();
+}
+
+function isUpgradeUnlocked(u){
+  if(!u.req) return true;
+  if(u.req.building) return (state.buildings[u.req.building]||0)>=u.req.count;
+  return true;
+}
+
+// ============================================================
+//  GOLDEN COOKIE
+// ============================================================
+function scheduleGolden(){
+  setTimeout(spawnGolden, 60000+Math.random()*120000);
+}
+function spawnGolden(){
+  const el=document.getElementById('goldenCookie');
+  el.style.left=(50+Math.random()*(window.innerWidth-150))+'px';
+  el.style.top=(80+Math.random()*(window.innerHeight-150))+'px';
+  el.style.display='block';
+  setTimeout(()=>{ el.style.display='none'; scheduleGolden(); },13000);
+}
+function collectGolden(){
+  document.getElementById('goldenCookie').style.display='none';
+  const bonus=Math.max(getTotalCps()*13, state.clickMult*100);
+  state.cookies+=bonus; state.totalCookies+=bonus;
+  showNotif('🌟 Cookie Dorée! +'+formatNum(bonus)+' cookies!');
+  updateUI(); scheduleGolden();
+}
+
+// ============================================================
+//  TICK
+// ============================================================
+let lastTick=Date.now();
+setInterval(()=>{
+  const now=Date.now(), dt=(now-lastTick)/1000; lastTick=now;
+  const gain=getTotalCps()*dt;
+  state.cookies+=gain; state.totalCookies+=gain;
+  updateUI(); checkMilestones();
+},100);
+
+// ============================================================
+//  UI UPDATE
+// ============================================================
+function updateUI(){
+  document.getElementById('cookieDisplay').childNodes[0].textContent=formatNum(state.cookies)+' ';
+  document.getElementById('cpsDisplay').textContent=formatNum(getTotalCps())+'/sec · '+formatNum(state.clickMult)+'/clic';
+  document.getElementById('totalDisplay').textContent=formatNum(state.totalCookies);
+  document.getElementById('perClickDisplay').textContent=formatNum(state.clickMult);
+  document.getElementById('cpsSmall').textContent=formatNum(getTotalCps());
+  document.getElementById('clickMult').textContent=formatNum(state.clickMult)+'x';
+  document.getElementById('cpsMult').textContent=formatNum(state.cpsMult)+'x';
+  document.getElementById('statTotal').textContent=formatNum(state.totalCookies);
+  document.getElementById('statCPS').textContent=formatNum(getTotalCps());
+  document.getElementById('statClicks').textContent=formatNum(state.totalClicks);
+  document.getElementById('statPerClick').textContent=formatNum(state.clickMult);
+  updateBuildingAffordability();
+  updateUpgradeAffordability();
+  updateBuildingsDetail();
+  updateMilestoneBar();
+}
+
+function updateBuildingAffordability(){
+  BUILDINGS.forEach(b=>{
+    const card=document.getElementById('bcard-'+b.id);
+    if(!card) return;
+    const cost=getCostFor(b,1);
+    card.querySelector('.building-cost').textContent=formatNum(cost)+' 🍪';
+    card.classList.toggle('can-afford', state.cookies>=cost);
+    card.classList.toggle('disabled', state.cookies<cost);
+    card.querySelector('.building-count').textContent=state.buildings[b.id]||0;
+  });
+}
+
+function updateUpgradeAffordability(){
+  UPGRADES.forEach(u=>{
+    const card=document.getElementById('ucard-'+u.id);
+    if(!card) return;
+    const purchased=!!state.upgrades[u.id];
+    const unlocked=isUpgradeUnlocked(u);
+    card.classList.toggle('purchased', purchased);
+    card.classList.toggle('locked', !unlocked&&!purchased);
+    card.classList.toggle('can-afford', !purchased&&unlocked&&state.cookies>=u.cost);
+  });
+}
+
+function updateBuildingsDetail(){
+  const c=document.getElementById('buildingsDetail');
+  c.innerHTML='';
+  BUILDINGS.forEach(b=>{
+    const cnt=state.buildings[b.id]||0;
+    if(!cnt) return;
+    const contrib=cnt*b.baseCps*state.cpsMult;
+    const pct=getTotalCps()>0?(contrib/getTotalCps()*100).toFixed(1):0;
+    const row=document.createElement('div');
+    row.className='building-row';
+    row.innerHTML=`<div class="icon-name"><span>${b.icon}</span><span>${b.name} ×${cnt}</span></div><span class="cps-contrib">${formatNum(contrib)}/s (${pct}%)</span>`;
+    c.appendChild(row);
+  });
+  if(!c.children.length) c.innerHTML='<p style="color:var(--text2);font-size:0.78rem;">Achetez des bâtiments pour voir les stats.</p>';
+}
+
+// ============================================================
+//  MILESTONES
+// ============================================================
+const unlockedMilestones=new Set();
+function checkMilestones(){
+  MILESTONES.forEach(m=>{
+    if(unlockedMilestones.has(m.id)) return;
+    let ok=false;
+    if(m.req!==null&&m.req!==undefined&&!m.clicks&&!m.cps) ok=state.totalCookies>=m.req;
+    if(m.clicks) ok=state.totalClicks>=m.clicks;
+    if(m.cps) ok=getTotalCps()>=m.cps;
+    if(ok){ unlockedMilestones.add(m.id); showNotif('🏆 Jalon: '+m.name); renderMilestones(); }
+  });
+}
+function updateMilestoneBar(){
+  const unlocked=MILESTONES.filter(m=>m.req!==null&&!m.clicks&&!m.cps);
+  const next=unlocked.find(m=>state.totalCookies<m.req);
+  if(!next){ document.getElementById('milestoneBar').style.width='100%'; document.getElementById('milestoneBarLabel').textContent='Tous débloqués!'; return; }
+  const prev=unlocked[unlocked.indexOf(next)-1];
+  const from=prev?prev.req:0;
+  const pct=Math.min(100,((state.totalCookies-from)/(next.req-from))*100);
+  document.getElementById('milestoneBar').style.width=pct+'%';
+  document.getElementById('milestoneBarLabel').textContent=formatNum(state.totalCookies)+' / '+formatNum(next.req);
+}
+
+// ============================================================
+//  RENDER
+// ============================================================
+function renderBuildings(){
+  const grid=document.getElementById('buildingGrid');
+  grid.innerHTML='';
+  BUILDINGS.forEach(b=>{
+    const cost=getCostFor(b,1);
+    const can=state.cookies>=cost;
+    const cnt=state.buildings[b.id]||0;
+    const card=document.createElement('div');
+    card.className='building-card'+(can?' can-afford':' disabled');
+    card.id='bcard-'+b.id;
+    card.onclick=()=>buyBuilding(b.id);
+    card.innerHTML=`
+      <span class="building-icon">${b.icon}</span>
+      <div>
+        <div class="building-name">${b.name}</div>
+        <div class="building-desc">${b.desc} <span style="color:var(--accent3)">+${b.baseCps}/s</span></div>
+      </div>
+      <div class="building-count-col">
+        <div class="building-count">${cnt}</div>
+        <div class="building-cost">${formatNum(cost)} 🍪</div>
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+function renderUpgrades(){
+  const grid=document.getElementById('upgradesGrid');
+  grid.innerHTML='';
+  UPGRADES.forEach(u=>{
+    const purchased=!!state.upgrades[u.id];
+    const unlocked=isUpgradeUnlocked(u);
+    const canAfford=!purchased&&unlocked&&state.cookies>=u.cost;
+    const card=document.createElement('div');
+    let cls='upgrade-card';
+    if(purchased) cls+=' purchased';
+    else if(!unlocked) cls+=' locked';
+    else if(canAfford) cls+=' can-afford';
+    card.className=cls;
+    card.id='ucard-'+u.id;
+    card.onclick=()=>buyUpgrade(u.id);
+    const badgeClass=u.type==='click'?'click':u.type==='cps'?'cps':'special';
+    const badgeTxt=u.type==='click'?'Clic':u.type==='cps'?'CPS':'Combo';
+    const lockTxt=(!unlocked&&!purchased&&u.req)?`🔒 Besoin: ${u.req.count} ${BUILDINGS.find(b=>b.id===u.req.building)?.name||''}`:null;
+    card.innerHTML=`
+      <span class="upgrade-icon">${purchased?'✅':u.icon}</span>
+      <span class="upgrade-badge ${badgeClass}">${badgeTxt} ×${u.mult}</span>
+      <div class="upgrade-name">${u.name}</div>
+      <div class="upgrade-desc">${lockTxt||u.desc}</div>
+      <div class="upgrade-cost">${purchased?'✓ Achetée':formatNum(u.cost)+' 🍪'}</div>`;
+    grid.appendChild(card);
+  });
+}
+
+function renderMilestones(){
+  const list=document.getElementById('milestonesList');
+  list.innerHTML='';
+  MILESTONES.forEach(m=>{
+    const unlocked=unlockedMilestones.has(m.id);
+    const item=document.createElement('div');
+    item.className='milestone-item'+(unlocked?' unlocked':'');
+    item.innerHTML=`<span class="m-icon">${unlocked?m.icon:'🔒'}</span><div><div class="m-name">${m.name}</div><div class="m-req">${m.desc}</div></div>`;
+    list.appendChild(item);
+  });
+  const badges=document.getElementById('badgesContainer');
+  badges.innerHTML='';
+  MILESTONES.forEach(m=>{
+    const b=document.createElement('span');
+    b.className='badge'+(unlockedMilestones.has(m.id)?' unlocked':'');
+    b.textContent=m.icon; b.title=m.name;
+    badges.appendChild(b);
+  });
+}
+
+// ============================================================
+//  TABS
+// ============================================================
+function switchTab(tab){
+  const tabs=['shop','upgrades','stats'];
+  document.querySelectorAll('.tab-btn').forEach((btn,i)=>btn.classList.toggle('active',tabs[i]===tab));
+  document.querySelectorAll('.tab-content').forEach(tc=>tc.classList.remove('active'));
+  document.getElementById('tab-'+tab).classList.add('active');
+}
+
+// ============================================================
+//  NOTIFICATION
+// ============================================================
+let notifTimer=null;
+function showNotif(msg){
+  const el=document.getElementById('notif');
+  el.textContent=msg; el.classList.add('show');
+  clearTimeout(notifTimer);
+  notifTimer=setTimeout(()=>el.classList.remove('show'),3000);
+}
+
+// ============================================================
+//  SAVE / LOAD
+// ============================================================
+function saveGame(){ localStorage.setItem('cc_save2',JSON.stringify(state)); }
+function loadGame(){
+  try{
+    const raw=localStorage.getItem('cc_save2');
+    if(!raw) return;
+    const s=JSON.parse(raw);
+    state={...state,...s};
+    state.clickMult=1; state.cpsMult=1;
+    UPGRADES.forEach(u=>{
+      if(state.upgrades[u.id]){
+        if(u.type==='click') state.clickMult*=u.mult;
+        if(u.type==='cps')   state.cpsMult*=u.mult;
+        if(u.type==='special'){ state.clickMult*=u.mult; state.cpsMult*=u.mult; }
+      }
+    });
+  }catch(e){ console.warn('Load error',e); }
+}
+setInterval(saveGame,10000);
+
+// ============================================================
+//  INIT
+// ============================================================
+loadGame();
+renderBuildings();
+renderUpgrades();
+renderMilestones();
+updateUI();
+scheduleGolden();
+</script>
+</body>
 </html>
